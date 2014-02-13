@@ -1,4 +1,27 @@
-# Challenge for Software Engineer - Big Data 
+# Setup instructions
+Clone into your favorite directory
+    git clone git@github.com:dsadaka/data-engineering favorite_dir
+
+Change to favorite_dir
+    cd ./favorite_dir
+
+Install ruby version shown in .ruby-version
+    rvm install ruby-2.0.0-p247
+
+Create gemset named in .ruby-gemset
+    rvm gemset create rails-bootstrap
+
+Build the bundle
+    bundle install
+
+Start the web server
+    bundle exec rails s
+
+In browser, go to localhost:3000
+
+Problems?  Questions?  Call Dan Sadaka at (305) 999-0191
+
+# Challenge for Software Engineer - Big Data
 To better assess a candidates development skills, we would like to provide the following challenge.  You have as much time as you'd like (though we ask that you not spend more than a few hours).
 
 There are three jobs that both use this challenge:

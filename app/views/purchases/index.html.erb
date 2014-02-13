@@ -1,0 +1,47 @@
+<h1>Upload Tab Delimited File to Purchases Table</h1>
+
+<%= form_tag  upload_csv_path() , :multipart => true,:id=>'csvfrm' %>
+  <%= file_field_tag :csvfile  %> <br><br>
+
+  <%= submit_tag("Upload") %> <%= %Q{#{@file_name} is being viewed!}   if @imp_data %>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Qty</th>
+      <th>Merchant address</th>
+      <th>Merchant name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @purchases.each do |purchase| %>
+      <tr>
+        <td><%= purchase.name %></td>
+        <td><%= purchase.description %></td>
+        <td align="right"><%= number_to_currency(purchase.price) %></td>
+        <td align="right"><%= purchase.qty %></td>
+        <td><%= purchase.merchant_address %></td>
+        <td><%= purchase.merchant_name %></td>
+        <td><%= link_to 'Show', purchase %></td>
+        <td><%= link_to 'Edit', edit_purchase_path(purchase) %></td>
+        <td><%= link_to 'Destroy', purchase, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>
+  <%= "Total Revenue = #{number_to_currency(@total_revenue)}" %>
+</h3>
+
+<br>
+
+<%= link_to 'New Purchase', new_purchase_path %>

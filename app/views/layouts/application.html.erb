@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CSV Upload</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<% flash.each do |key, value| %>
+  <div id="error_explanation" data-alert class="<%= key %>">
+    <h2>
+      <%= value %>
+    </h2>
+  </div>
+<% end %>
+
+<%= yield %>
+
+</body>
+</html>
