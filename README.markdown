@@ -2,19 +2,25 @@
 Clone into your favorite directory
     git clone git@github.com:dsadaka/data-engineering favorite_dir
 
-Change to favorite_dir
-    cd ./favorite_dir
-
 Install ruby version shown in .ruby-version
+
     rvm install ruby-2.0.0-p247
 
+Change to favorite_dir and use new ruby
+
+    cd ./favorite_dir
+    rvm use 2.0.0-p247
+
 Create gemset named in .ruby-gemset
+
     rvm gemset create rails-bootstrap
 
 Build the bundle
+
     bundle install
 
 Start the web server
+
     bundle exec rails s
 
 In browser, go to localhost:3000
