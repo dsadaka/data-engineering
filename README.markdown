@@ -19,6 +19,10 @@ Build the bundle
 
     bundle install
 
+Create the table
+
+    RAILS_ENV=development bin/rake db:migrate
+
 Start the web server
 
     bundle exec rails s
