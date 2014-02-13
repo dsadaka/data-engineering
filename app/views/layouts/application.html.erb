@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>CSV Upload</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
-<% flash.each do |key, value| %>
-  <div id="error_explanation" data-alert class="<%= key %>">
-    <h2>
-      <%= value %>
-    </h2>
-  </div>
-<% end %>
-
-<%= yield %>
-
-</body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= content_for?(:title) ? yield(:title) : "Big Data :-)" %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Big Data" %>">
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <header>
+      <%= render 'layouts/navigation' %>
+    </header>
+    <main role="main">
+       <%= render 'layouts/messages' %>
+       <%= yield %>
+    </main>
+  </body>
 </html>

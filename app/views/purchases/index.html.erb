@@ -1,46 +1,61 @@
 <h1>Upload Tab Delimited File to Purchases Table</h1>
 
 <%= form_tag  upload_csv_path() , :multipart => true,:id=>'csvfrm' %>
-  <%= file_field_tag :csvfile  %> <br><br>
 
-  <%= submit_tag("Upload") %> <%= %Q{#{@file_name} is being viewed!}   if @imp_data %>
+    <span class="btn btn-default btn-file">
+        Browse for file <input id="csvfile" type="file" name="csvfile" >
+    </span>
+    <span id="file_name"></span>
+    <button id="upload" type="submit" class="btn btn-success hidden">Upload</button>
+    <br><br>
 </form>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th>Qty</th>
-      <th>Merchant address</th>
-      <th>Merchant name</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+                      <th>Name</th>
+                      <th>Description</th>
+                      <th align="right">Price</th>
+                      <th align="right">Qty</th>
+                      <th>Merchant address</th>
+                      <th>Merchant name</th>
+                      <th></th>
+                      <th></th>
+                      <th></th>
+					</tr>
+				</thead>
+                <tfoot>
+                    <tr>
+                        <th colspan="9">
 
-  <tbody>
-    <% @purchases.each do |purchase| %>
-      <tr>
-        <td><%= purchase.name %></td>
-        <td><%= purchase.description %></td>
-        <td align="right"><%= number_to_currency(purchase.price) %></td>
-        <td align="right"><%= purchase.qty %></td>
-        <td><%= purchase.merchant_address %></td>
-        <td><%= purchase.merchant_name %></td>
-        <td><%= link_to 'Show', purchase %></td>
-        <td><%= link_to 'Edit', edit_purchase_path(purchase) %></td>
-        <td><%= link_to 'Destroy', purchase, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+                            <%= "Total Revenue = #{number_to_currency(@total_revenue)}" %>
 
-<h3>
-  <%= "Total Revenue = #{number_to_currency(@total_revenue)}" %>
-</h3>
+                        </th>
+                    </tr>
+                </tfoot>
+				<tbody>
+                <% @purchases.each do |purchase| %>
+                  <tr>
+                    <td><%= purchase.name %></td>
+                    <td><%= purchase.description %></td>
+                    <td align="right"><%= number_to_currency(purchase.price) %></td>
+                    <td align="right"><%= purchase.qty %></td>
+                    <td><%= purchase.merchant_address %></td>
+                    <td><%= purchase.merchant_name %></td>
+                    <td><%= link_to 'Show', purchase %></td>
+                    <td><%= link_to 'Edit', edit_purchase_path(purchase) %></td>
+                    <td><%= link_to 'Destroy', purchase, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  </tr>
+                <% end %>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
 
 <br>
 

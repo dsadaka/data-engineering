@@ -1,5 +1,6 @@
 class PurchasesController < ApplicationController
   require 'csv'
+  include ActionView::Helpers::TextHelper
 
   before_action :set_purchase, only: [:show, :edit, :update, :destroy]
 
@@ -71,7 +72,8 @@ class PurchasesController < ApplicationController
 
     if request.post?
 
-      msg = nil
+      msg = nil                 # Gets error msg if applicable
+      recs_uploaded = 0
       file = params[:csvfile]
 
       begin
@@ -85,29 +87,32 @@ class PurchasesController < ApplicationController
         if (@file_name =~ /.\.tab$/i)
 
 
-            CSV.foreach(file.tempfile, {:headers => true, :return_headers => false, :col_sep => "\t"}) do |row|
+            CSV.foreach(file.tempfile, {:headers => true, :col_sep => "\t"}) do |row|
               #Car.create(:make => row[0], :model => row[1], :year => row[2])
               #puts "#{row[0]} | #{row[1]} | #{row[2]}"
               puts CSV.generate_line(row)
-              p = Purchase.create(name: row.fetch('purchaser name'),
-                                  description: row.fetch('item description'),
-                                  price: row.fetch('item price'),
-                                  qty: row.fetch('purchase count'),
-                                  merchant_address: row.fetch('merchant address'),
-                                  merchant_name: row.fetch('merchant name'),
-              )
+              p = Purchase.create(  name: row.fetch('purchaser name'),
+                                    description: row.fetch('item description'),
+                                    price: row.fetch('item price'),
+                                    qty: row.fetch('purchase count'),
+                                    merchant_address: row.fetch('merchant address'),
+                                    merchant_name: row.fetch('merchant name'),
+                                  )
+              recs_uploaded += 1
             end
         else
-          @file_errors << ["Uploaded file is not a Tab delimited file (name should end with .tab)!"]
+          raise "Not Tab Delimited"
         end
       rescue Exception => e
-        msg = case e.to_s[0..12]
-              when "key not found" then
-                "Invalid Input File"
-              when "No input file" then
-                "Please select an input file"
-              else
-                "Error \"#{e.to_s}\" occured during upload. "
+        msg = case e.to_s
+                when /^Not Tab Delimited/
+                  "Uploaded file is not a Tab delimited file (name should end with .tab)!"
+                when /^key not found/ then
+                  "Invalid Input File"
+                when /^No input file/ then
+                  "Please select an input file"
+                else
+                  "Error \"#{e.to_s}\" occured during upload. "
               end
         logger.debug msg
       end
@@ -116,7 +121,7 @@ class PurchasesController < ApplicationController
         flash[:error] = msg
         flash.delete(:notice)
       else
-        flash[:notice] = "Upload successful"
+        flash[:notice] = "Uploaded #{pluralize(recs_uploaded, "record")} successfully"
         flash.delete(:error)
       end
 
