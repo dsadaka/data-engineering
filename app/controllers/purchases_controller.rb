@@ -7,6 +7,15 @@ class PurchasesController < ApplicationController
   # GET /purchases
   # GET /purchases.json
   def index
+
+    # If new purchases were just uploaded, show them
+
+    if session[:new_ids]
+      @new_purchases = Purchase.where(["id in (?)", session[:new_ids]])
+      @total_uploaded_revenue = @new_purchases.sum("qty * price") if @new_purchases
+      session.delete(:new_ids)
+    end
+
     @purchases = Purchase.all
     @total_revenue = Purchase.sum("qty * price")
   end
@@ -72,9 +81,12 @@ class PurchasesController < ApplicationController
 
     if request.post?
 
-      msg = nil                 # Gets error msg if applicable
-      recs_uploaded = 0
-      file = params[:csvfile]
+      msg               = nil                 # Gets error msg if applicable
+      recs_uploaded     = 0
+      file              = params[:csvfile]
+      items_added       = 0
+      merchants_added   = 0
+      new_purchases     = []
 
       begin
 
@@ -91,14 +103,18 @@ class PurchasesController < ApplicationController
               #Car.create(:make => row[0], :model => row[1], :year => row[2])
               #puts "#{row[0]} | #{row[1]} | #{row[2]}"
               puts CSV.generate_line(row)
+              merchant, exists = Merchant.fetch_or_create(row['merchant name'], row['merchant address'])
+              merchants_added += 1 unless exists
+              item, exists = Item.fetch_or_create(row['item description'], row['item price'], merchant.id)
+              items_added += 1 unless exists
+
               p = Purchase.create(  name: row.fetch('purchaser name'),
-                                    description: row.fetch('item description'),
                                     price: row.fetch('item price'),
-                                    qty: row.fetch('purchase count'),
-                                    merchant_address: row.fetch('merchant address'),
-                                    merchant_name: row.fetch('merchant name'),
+                                    item_id: item.id,
+                                    qty: row.fetch('purchase count')
                                   )
               recs_uploaded += 1
+              new_purchases << p.id
             end
         else
           raise "Not Tab Delimited"
@@ -121,11 +137,13 @@ class PurchasesController < ApplicationController
         flash[:error] = msg
         flash.delete(:notice)
       else
-        flash[:notice] = "Uploaded #{pluralize(recs_uploaded, "record")} successfully"
+        flash[:notice] = "Uploaded #{pluralize(recs_uploaded, 'purchase')} successfully.  #{pluralize(items_added, 'item')} added. #{pluralize(merchants_added, 'merchant')} added."
         flash.delete(:error)
+        session[:new_ids] = new_purchases
       end
 
     end
+
 
     redirect_to :action => :index
 

@@ -2,12 +2,8 @@
 
 one:
   name: MyString
-  item_id: MyString
-  price: 9.99
-  qty: 1
+  address: MyString
 
 two:
   name: MyString
-  item_id: MyString
-  price: 9.99
-  qty: 1
+  address: MyString

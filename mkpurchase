@@ -1,1 +1,1 @@
-bundle exec rails g scaffold purchase name description 'price:decimal{12,2}' qty:integer merchant_address:string merchant_name:string
+bundle exec rails g scaffold purchase name item_id 'price:decimal{12,2}' qty:integer 

@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row clearfix">
+    <div class="col-md-12 column">
+      <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+          <th colspan="9" style="text-align: center; background-color: white;"><%= table_title %></th>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th align="right">Price</th>
+          <th align="right">Qty</th>
+          <th>Merchant address</th>
+          <th>Merchant name</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+          <th colspan="9">
+
+            <%= "Total Revenue = #{number_to_currency(total)}" %>
+
+          </th>
+        </tr>
+        </tfoot>
+        <tbody>
+        <% purchases.each do |purchase| %>
+            <tr>
+              <td><%= purchase.name %></td>
+              <td><%= purchase.item.description %></td>
+              <td align="right"><%= number_to_currency(purchase.price) %></td>
+              <td align="right"><%= purchase.qty %></td>
+              <td><%= purchase.item.merchant.address %></td>
+              <td><%= purchase.item.merchant.name %></td>
+              <td><%= link_to 'Show', purchase %></td>
+              <td><%= link_to 'Edit', edit_purchase_path(purchase) %></td>
+              <td><%= link_to 'Destroy', purchase, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

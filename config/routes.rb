@@ -1,6 +1,10 @@
 Csvup::Application.routes.draw do
+  resources :merchants
+
+  resources :items
+
   resources :purchases
-  match "purchase/upload_csv", :to => 'purchases#upload_csv', :via => :post, :as => 'upload_csv'
+  post "purchase/upload_csv", :to => 'purchases#upload_csv', :as => 'upload_csv'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

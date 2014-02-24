@@ -1,0 +1,1 @@
+bundle exec rails g scaffold item description 'price:decimal{12,2}' qoh:integer merchant_id:integer

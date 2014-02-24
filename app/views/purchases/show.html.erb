@@ -6,8 +6,8 @@
 </p>
 
 <p>
-  <strong>Description:</strong>
-  <%= @purchase.description %>
+  <strong>Item:</strong>
+  <%= @purchase.item_id %>
 </p>
 
 <p>
@@ -18,16 +18,6 @@
 <p>
   <strong>Qty:</strong>
   <%= @purchase.qty %>
-</p>
-
-<p>
-  <strong>Merchant address:</strong>
-  <%= @purchase.merchant_address %>
-</p>
-
-<p>
-  <strong>Merchant name:</strong>
-  <%= @purchase.merchant_name %>
 </p>
 
 <%= link_to 'Edit', edit_purchase_path(@purchase) %> |
